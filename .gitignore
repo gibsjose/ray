@@ -1,3 +1,7 @@
+### Project files ###
+bin
+build
+ray
 
 # Created by https://www.gitignore.io/api/c,c++,cuda,macos,linux
 # Edit at https://www.gitignore.io/?templates=c,c++,cuda,macos,linux

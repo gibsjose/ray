@@ -3,8 +3,8 @@ bin
 build
 ray
 
-# Created by https://www.gitignore.io/api/c,c++,cuda,macos,linux
-# Edit at https://www.gitignore.io/?templates=c,c++,cuda,macos,linux
+# Created by https://www.gitignore.io/api/c,c++,cuda,macos,linux,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=c,c++,cuda,macos,linux,visualstudiocode
 
 ### C ###
 # Prerequisites
@@ -130,4 +130,16 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# End of https://www.gitignore.io/api/c,c++,cuda,macos,linux
+### VisualStudioCode ###
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/c,c++,cuda,macos,linux,visualstudiocode

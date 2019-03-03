@@ -90,7 +90,7 @@ inline std::ostream & operator<<(std::ostream & os, vec3 &t) {
 
 ///< Make unit vector
 inline void vec3::make_unit_vector() {
-    float k = 1.0F / sqrtf(SQUARE(e[0]) + SQUARE(e[1]) + SQUARE(e[2]));
+    float k = 1.0 / sqrtf(SQUARE(e[0]) + SQUARE(e[1]) + SQUARE(e[2]));
 }
 
 ///< Addition operator

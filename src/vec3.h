@@ -31,7 +31,7 @@
 class vec3 {
 public:
     // Constructors
-    vec3() : e{0.0, 0.0, 0.0} {}
+    vec3() : e{1.0, 1.0, 1.0} {}
     vec3(const float x, const float y, const float z) : e{x, y, z} {}
 
     // X, Y, Z and R, G, B helper methods

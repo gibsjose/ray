@@ -23,6 +23,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+#include "camera.h"
 #include "vec3.h"
 #include "ray.h"
 #include "sphere.h"
@@ -34,21 +35,19 @@
 vec3 Colour(const Ray & ray, Hittable * world);
 
 int main() {
-    const uint32_t width = 800;
-    const uint32_t height = 400;
+    const uint32_t width = 1200;        ///< Scene width
+    const uint32_t height = 600;        ///< Scene height
+    const uint32_t num_samples = 80;    ///< Number of samples over which to average edge colour
 
     float aspect_ratio = (float)width / height;
 
     // Write PPM header
     std::cout << "P3\n" << width << " " << height << "\n255\n";
 
-    // Screen bounds
-    vec3 lower_left_corner(-2.0, -1.0, -1.0);
-    vec3 horizontal(2.0 * aspect_ratio, 0.0, 0.0);
-    vec3 vertical(0.0, 2.0, 0.0);
-    vec3 origin(0.0, 0.0, 0.0);
+    // Camera object
+    Camera camera;
 
-    // Objects 
+    // Hittable objects 
     Hittable * list[2];
     list[0] = new Sphere(vec3(0, -100.5, -1), 100);
     list[1] = new Sphere(vec3(0, 0, -1), 0.5);
@@ -57,13 +56,18 @@ int main() {
     // Draw screen starting in the lower left corner
     for (int32_t j = height - 1; j >= 0; --j) {
         for (int32_t i = 0; i < width; ++i) {
-            float u = float(i) / float(width);
-            float v = float(j) / float(height);
+            vec3 colour(0, 0, 0);
 
-            Ray ray(origin, lower_left_corner + (u * horizontal) + (v * vertical));
+            // Sample the edge values to perform anti-aliasing
+            for (int32_t s = 0; s < num_samples; ++s) {
+                float u = float(i + drand48()) / float(width);
+                float v = float(j + drand48()) / float(height);
 
-            vec3 p = ray.point_at_parameter(2.0);
-            vec3 colour = Colour(ray, world);
+                Ray ray = camera.get_ray(u, v);
+                colour += Colour(ray, world);
+            }
+
+            colour /= float(num_samples);
 
             int32_t ir = int32_t(255.99 * colour.r());
             int32_t ig = int32_t(255.99 * colour.g());

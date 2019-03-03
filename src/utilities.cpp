@@ -46,3 +46,8 @@ vec3 Colour(const Ray & ray, Hittable * world) {
         return ((1.0 - t) * vec3(1, 1, 1)) + (t * vec3(0.5, 0.7, 1.0));
     }
 }
+
+// Compute the reflection between two vectors
+vec3 Reflect(const vec3 & v, const vec3 & n) {
+    return v - 2 * dot(v, n) * n;
+}

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// FILE: hittable.h
+// FILE: material.h
 //
 // AUTHORS:
 // Joseph Gibson / <joseph.gibson@nasa.gov>
@@ -8,33 +8,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// @file
 ///
-/// @brief  Defines a surface or volume that a ray can hit
+/// @brief  Abstract material class
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef HITTABLE_H
-#define HITTABLE_H
+#ifndef MATERIAL_H
+#define MATERIAL_H
 
 ///////////////////////////////////////////////////////////////////////////////
 // INCLUDES
 ///////////////////////////////////////////////////////////////////////////////
-#include "vec3.h"
 #include "ray.h"
+#include "hittable.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // CLASSES
 ///////////////////////////////////////////////////////////////////////////////
-class Material;     // Forward declaration to avoid circular dependencies
-
-struct HitRecord {
-    float t;
-    vec3 p;
-    vec3 normal;
-    Material * material;
-};
-
-class Hittable {
+class Material {
 public:
-    virtual bool hit(const Ray & r, const float t_min, const float t_max, HitRecord & record) const = 0;
+    virtual bool scatter(const Ray & ray, const HitRecord & record, vec3 & attenuation, Ray & scattered) const = 0;
 };
 
-#endif//HITTABLE_H
+#endif//MATERIAL_H

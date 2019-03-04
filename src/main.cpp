@@ -34,21 +34,23 @@
 // METHODS
 ///////////////////////////////////////////////////////////////////////////////
 int main() {
-    const uint32_t width = 1200;            ///< Scene width
-    const uint32_t height = 600;            ///< Scene height
-    const uint32_t num_samples = 80;        ///< Number of samples over which to average edge colour
-    const float gamma = 2.0;                ///< Gamma value
-    const float inv_gamma = 1.0 / gamma;    ///< Inverse gamma value
+    const uint32_t width = 1200;                        ///< Scene width
+    const uint32_t height = 600;                        ///< Scene height
+    const uint32_t num_samples = 80;                    ///< Number of samples over which to average edge colour
+    const float aspect_ratio = (float)width / height;   ///< Aspect ratio
+    const float gamma = 2.0;                            ///< Gamma value
+    const float inv_gamma = 1.0 / gamma;                ///< Inverse gamma value
+    const uint8_t PNG_RGB_CHANNELS = 3;                 ///< Number of channels for PNG: 3 for RGB, 4 for RGBA
 
-    float aspect_ratio = (float)width / height;
+    uint8_t * image_data = NULL;
 
-    // Write PPM header
-    std::cout << "P3\n" << width << " " << height << "\n255\n";
+    // Allocate memory for the image
+    image_data = (uint8_t *) malloc(width * height * PNG_RGB_CHANNELS);
 
     // Camera object
     Camera camera;
 
-    // Hittable objects 
+    // Hittable objects
     Hittable * list[2];
     list[0] = new Sphere(vec3(0, -100.5, -1), 100);
     list[1] = new Sphere(vec3(0, 0, -1), 0.5);
@@ -75,7 +77,22 @@ int main() {
             int32_t ig = int32_t(255.99 * colour.g());
             int32_t ib = int32_t(255.99 * colour.b());
 
-            std::cout << ir << " " << ig << " " << ib << "\n";
+            uint32_t y = (height - 1 - j) * PNG_RGB_CHANNELS;
+            uint32_t x = i * PNG_RGB_CHANNELS;
+
+            uint32_t r_index = (y * width) + x + 0;
+            uint32_t g_index = (y * width) + x + 1;
+            uint32_t b_index = (y * width) + x + 2;
+
+            image_data[r_index] = (uint8_t)ir;
+            image_data[g_index] = (uint8_t)ig;
+            image_data[b_index] = (uint8_t)ib;
         }
     }
+
+    // Write PNG
+    stbi_write_png("scene.png", width, height, PNG_RGB_CHANNELS, image_data, width * PNG_RGB_CHANNELS);
+
+    // Free the image data
+    free(image_data);
 }

@@ -55,8 +55,8 @@ int main() {
     // Materials
     Lambertian diffuse_1(vec3(0.8, 0.3, 0.3));
     Lambertian diffuse_2(vec3(0.8, 0.8, 0.0));
-    Metal metal_1(vec3(0.8, 0.6, 0.2));
-    Metal metal_2(vec3(0.8, 0.8, 0.8));
+    Metal metal_1(vec3(0.8, 0.6, 0.2), 0.3);
+    Metal metal_2(vec3(0.8, 0.8, 0.8), 1.0);
 
     // Hittable objects 
     Hittable * list[4];

@@ -25,16 +25,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 class Metal : public Material {
 public:
-    Metal(const vec3 & a) : albedo(a) {}
+    Metal(const vec3 & a, const float f) : albedo(a) {
+        // Bound fuzziness between 0 and 1
+        fuzz = fmin(fmax(f, 0.0), 1.0);
+    }
 
     virtual bool scatter(const Ray & ray, const HitRecord & record, vec3 & attenuation, Ray & scattered) const {
         vec3 reflected = Reflect(unit_vector(ray.direction()), record.normal);
-        scattered = Ray(record.p, reflected);
+        scattered = Ray(record.p, reflected + (fuzz * RandomInUnitSphere()));
         attenuation = albedo;
         return (dot(scattered.direction(), record.normal) > 0);
     }
 
     vec3 albedo;    ///< Measure of diffuse reflection
+    float fuzz;     ///< Fuzziness factor (0 to 1)
 };
 
 #endif//METAL_H

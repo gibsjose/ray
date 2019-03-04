@@ -73,3 +73,10 @@ bool Refract(const vec3 & v, const vec3 & n, const float ratio, vec3 & refracted
         return false;
     }
 }
+
+// Compute the probability of reflection using Schlick's polynomial approximation
+float Schlick(const float cosine, const float refraction_index) {
+    float r0 = (1.0 - refraction_index) / (1.0 + refraction_index);
+    r0 = SQUARE(r0);
+    return r0 + ((1.0 - r0) * pow((1.0 - cosine), 5));
+}

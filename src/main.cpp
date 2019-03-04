@@ -28,6 +28,8 @@
 #include "ray.h"
 #include "sphere.h"
 #include "hittable_list.h"
+#include "lambertian.h"
+#include "metal.h"
 #include "utilities.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,10 +50,18 @@ int main() {
     // Camera object
     Camera camera;
 
+    // Materials
+    Lambertian diffuse_1(vec3(0.8, 0.3, 0.3));
+    Lambertian diffuse_2(vec3(0.8, 0.8, 0.0));
+    Metal metal_1(vec3(0.8, 0.6, 0.2));
+    Metal metal_2(vec3(0.8, 0.8, 0.8));
+
     // Hittable objects 
     Hittable * list[2];
-    list[0] = new Sphere(vec3(0, -100.5, -1), 100);
-    list[1] = new Sphere(vec3(0, 0, -1), 0.5);
+    list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_1);
+    list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_2);
+    // list[1] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
+    // list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &metal_2);
     Hittable * world = new HittableList(list, 2);
 
     // Draw screen starting in the lower left corner
@@ -65,7 +75,7 @@ int main() {
                 float v = float(j + drand48()) / float(height);
 
                 Ray ray = camera.get_ray(u, v);
-                colour += Colour(ray, world);
+                colour += Colour(ray, world, 0);
             }
 
             colour /= float(num_samples);

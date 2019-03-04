@@ -54,19 +54,20 @@ int main() {
     Camera camera;
 
     // Materials
-    Lambertian diffuse_1(vec3(0.8, 0.3, 0.3));
+    Lambertian diffuse_1(vec3(0.1, 0.2, 0.5));
     Lambertian diffuse_2(vec3(0.8, 0.8, 0.0));
     Metal metal_1(vec3(0.8, 0.6, 0.2), 0.3);
     Metal metal_2(vec3(0.8, 0.8, 0.8), 1.0);
     Dielectric dielectric_1(1.5);
 
     // Hittable objects 
-    Hittable * list[4];
-    list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_1);
-    list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_2);
+    Hittable * list[5];
+    list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_2);
+    list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_1);
     list[2] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
     list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &dielectric_1);
-    Hittable * world = new HittableList(list, 4);
+    list[4] = new Sphere(vec3(-1, 0, -1), -0.45, &dielectric_1);
+    Hittable * world = new HittableList(list, 5);
 
     // Draw screen starting in the lower left corner
     for (int32_t j = height - 1; j >= 0; --j) {

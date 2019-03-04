@@ -25,7 +25,7 @@
 // METHODS
 ///////////////////////////////////////////////////////////////////////////////
 vec3 RandomInUnitSphere();
-vec3 Colour(const Ray & ray, Hittable * world);
+vec3 Colour(const Ray & ray, Hittable * world, int32_t depth);
 vec3 Reflect(const vec3 & v, const vec3 & n);
 
 #endif//UTILITIES_H

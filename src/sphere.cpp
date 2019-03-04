@@ -40,6 +40,7 @@ bool Sphere::hit(const Ray & ray, const float t_min, const float t_max, HitRecor
             record.t = temp;
             record.p = ray.point_at_parameter(record.t);
             record.normal = (record.p - centre) / radius;
+            record.material = material;
             return true;
         }
 
@@ -48,6 +49,7 @@ bool Sphere::hit(const Ray & ray, const float t_min, const float t_max, HitRecor
             record.t = temp;
             record.p = ray.point_at_parameter(record.t);
             record.normal = (record.p - centre) / radius;
+            record.material = material;
             return true;
         }
     }

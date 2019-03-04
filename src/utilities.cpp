@@ -15,6 +15,7 @@
 // INCLUDES
 ///////////////////////////////////////////////////////////////////////////////
 #include "utilities.h"
+#include "material.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // METHODS
@@ -31,15 +32,21 @@ vec3 RandomInUnitSphere() {
 }
 
 // Generate a colour given a ray and a list of hittable objects
-vec3 Colour(const Ray & ray, Hittable * world) {
+vec3 Colour(const Ray & ray, Hittable * world, int32_t depth) {
     HitRecord record;
 
     // Check for a hit using the input ray
     // NOTE: t_min is set to 0.001 instead of 0 to avoid the 'shadow acne problem'
     //       by ignoring hits very near zero
     if (world->hit(ray, 0.001, MAXFLOAT, record)) {
-        vec3 target = record.p + record.normal + RandomInUnitSphere();
-        return 0.5 * Colour(Ray(record.p, target - record.p), world);
+        Ray scattered;
+        vec3 attenuation;
+
+        if ((depth < 50) && record.material->scatter(ray, record, attenuation, scattered)) {
+            return attenuation * Colour(scattered, world, depth + 1);
+        } else {
+            return vec3(0, 0, 0);
+        }
     } else {
         vec3 unit_direction = unit_vector(ray.direction());
         float t = 0.5F * (unit_direction.y() + 1.0);

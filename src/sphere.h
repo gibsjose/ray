@@ -18,6 +18,7 @@
 // INCLUDES
 ///////////////////////////////////////////////////////////////////////////////
 #include "hittable.h"
+#include "material.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // CLASSES
@@ -25,11 +26,12 @@
 class Sphere: public Hittable {
 public:
     Sphere() {}
-    Sphere(vec3 centre, const float radius): centre(centre), radius(radius) {};
-    virtual bool hit(const Ray & r, const float t_min, const float t_max, HitRecord & record) const;
+    Sphere(vec3 c, const float r, Material * m): centre(c), radius(r), material(m) {};
+    virtual bool hit(const Ray & ray, const float t_min, const float t_max, HitRecord & record) const;
 
-    vec3 centre;    ///< Circle centre point
-    float radius;   ///< Circle radius
+    vec3 centre;            ///< Circle centre point
+    float radius;           ///< Circle radius
+    Material * material;    ///< Material
 };
 
 #endif//SPHERE_H

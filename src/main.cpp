@@ -41,6 +41,7 @@ int main() {
     const uint32_t height = 600;                        ///< Scene height
     const uint32_t num_samples = 80;                    ///< Number of samples over which to average edge colour
     const float aspect_ratio = (float)width / height;   ///< Aspect ratio
+    const float vertical_fov = 90.0;                    ///< Vertical field of view in degrees
     const float gamma = 2.0;                            ///< Gamma value
     const float inv_gamma = 1.0 / gamma;                ///< Inverse gamma value
     const uint8_t PNG_RGB_CHANNELS = 3;                 ///< Number of channels for PNG: 3 for RGB, 4 for RGBA
@@ -51,7 +52,7 @@ int main() {
     image_data = (uint8_t *) malloc(width * height * PNG_RGB_CHANNELS);
 
     // Camera object
-    Camera camera;
+    Camera camera(vertical_fov, aspect_ratio);
 
     // Materials
     Lambertian diffuse_1(vec3(0.1, 0.2, 0.5));

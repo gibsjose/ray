@@ -59,12 +59,12 @@ int main() {
     Metal metal_2(vec3(0.8, 0.8, 0.8));
 
     // Hittable objects 
-    Hittable * list[2];
+    Hittable * list[4];
     list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_1);
     list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_2);
-    // list[1] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
-    // list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &metal_2);
-    Hittable * world = new HittableList(list, 2);
+    list[2] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
+    list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &metal_2);
+    Hittable * world = new HittableList(list, 4);
 
     // Draw screen starting in the lower left corner
     for (int32_t j = height - 1; j >= 0; --j) {

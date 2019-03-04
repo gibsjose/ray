@@ -25,8 +25,8 @@ bool HittableList::hit(const Ray & r, const float t_min, const float t_max, HitR
 
     double closest_so_far = t_max;
 
-    for (uint32_t i = 0; i < size; ++i) {
-        if (list[i]->hit(r, t_min, t_max, temp_record)) {
+    for (int32_t i = 0; i < size; ++i) {
+        if (list[i]->hit(r, t_min, closest_so_far, temp_record)) {
             hit_anything = true;
             closest_so_far = temp_record.t;
             record = temp_record;

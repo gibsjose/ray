@@ -58,3 +58,18 @@ vec3 Colour(const Ray & ray, Hittable * world, int32_t depth) {
 vec3 Reflect(const vec3 & v, const vec3 & n) {
     return v - 2 * dot(v, n) * n;
 }
+
+// Compute the refraction between two vectors, given the ratio (ni / nt) of the indices of refraction
+// between the two materials
+bool Refract(const vec3 & v, const vec3 & n, const float ratio, vec3 & refracted) {
+    vec3 uv = unit_vector(v);
+    float dt = dot(uv, n);
+    float discriminant = 1.0 - (SQUARE(ratio) * (1.0 - SQUARE(dt)));
+
+    if (discriminant > 0) {
+        refracted = ratio * (uv - (n * dt)) - (n * sqrt(discriminant));
+        return true;
+    } else {
+        return false;
+    }
+}

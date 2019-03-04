@@ -30,6 +30,7 @@
 #include "hittable_list.h"
 #include "lambertian.h"
 #include "metal.h"
+#include "dielectric.h"
 #include "utilities.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,13 +58,14 @@ int main() {
     Lambertian diffuse_2(vec3(0.8, 0.8, 0.0));
     Metal metal_1(vec3(0.8, 0.6, 0.2), 0.3);
     Metal metal_2(vec3(0.8, 0.8, 0.8), 1.0);
+    Dielectric dielectric_1(1.5);
 
     // Hittable objects 
     Hittable * list[4];
     list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_1);
     list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_2);
     list[2] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
-    list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &metal_2);
+    list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &dielectric_1);
     Hittable * world = new HittableList(list, 4);
 
     // Draw screen starting in the lower left corner

@@ -31,6 +31,17 @@ vec3 RandomInUnitSphere() {
     return p;
 }
 
+// Generate a random vector in a unit disk
+vec3 RandomInUnitDisk() {
+    vec3 p(1, 1, 1);
+
+    do {
+        p = 2.0 * vec3(drand48(), drand48(), 0.0) - vec3(1, 1, 0);
+    } while (dot(p, p) >= 1.0);
+
+    return p;
+}
+
 // Generate a colour given a ray and a list of hittable objects
 vec3 Colour(const Ray & ray, Hittable * world, int32_t depth) {
     HitRecord record;

@@ -39,21 +39,21 @@
 Hittable * RandomScene();
 
 int main() {
-    const uint32_t width = 1200;                ///< Scene width
-    const uint32_t height = 800;                ///< Scene height
-    const uint32_t num_samples = 80;            ///< Number of samples over which to average edge colour
+    const uint32_t width = 600;                 ///< Scene width
+    const uint32_t height = 400;                ///< Scene height
+    const uint32_t num_samples = 20;            ///< Number of samples over which to average edge colour
     const float gamma = 2.0;                    ///< Gamma value
     const float inv_gamma = 1.0 / gamma;        ///< Inverse gamma value
     const uint8_t PNG_RGB_CHANNELS = 3;         ///< Number of channels for PNG: 3 for RGB, 4 for RGBA
 
     // Camera settings
-    const vec3 look_from(13, 2, 3);                                 ///< Look-from vector (origin)
+    const vec3 look_from(14, 3, 12);                                ///< Look-from vector (origin)
     const vec3 look_at(0, 0, 0);                                    ///< Look-at vector
     const vec3 vup(0, 1, 0);                                        ///< View up
     const float aspect_ratio = (float)width / height;               ///< Aspect ratio
     const float vertical_fov = 20.0;                                ///< Vertical field of view in degrees (default = 90.0)
     const float aperture = 0.1;                                     ///< Aperture
-    const float focal_distance = 10.0;                              ///< Focal distance
+    const float focal_distance = 13.0;                              ///< Focal distance
 
     uint8_t * image_data = NULL;
 
@@ -71,15 +71,19 @@ int main() {
     Dielectric dielectric_1(1.5);
 
     // Hittable objects 
-    Hittable * list[5];
-    list[0] = new Sphere(vec3(0, -100.5, -1), 100, &diffuse_2);
-    list[1] = new Sphere(vec3(0, 0, -1), 0.5, &diffuse_1);
-    list[2] = new Sphere(vec3(1, 0, -1), 0.5, &metal_1);
-    list[3] = new Sphere(vec3(-1, 0, -1), 0.5, &dielectric_1);
-    list[4] = new Sphere(vec3(-1, 0, -1), -0.45, &dielectric_1);
-    Hittable * world = new HittableList(list, 5);
+    Hittable * list[4];
 
-    world = RandomScene();
+    list[0] = new Sphere(vec3(0,-1000,0), 1000, new Lambertian(vec3(0.5, 0.5, 0.5)));
+    list[1] = new Sphere(vec3(0, 1, 0), 1.0, new Dielectric(1.5));
+    list[2] = new Sphere(vec3(-4, 1, 0), 1.0, new Lambertian(vec3(0.8, 0.8, 0.0)));
+    list[3] = new Sphere(vec3(4, 1, 0), 1.0, new Metal(vec3(0.7, 0.6, 0.5), 0.0));
+
+    Hittable * world = new HittableList(list, 4);
+
+    // world = RandomScene();
+
+    const float inv_width = 1.0 / float(width);
+    const float inv_height = 1.0 / float(height);
 
     // Draw screen starting in the lower left corner
     for (int32_t j = height - 1; j >= 0; --j) {
@@ -88,8 +92,8 @@ int main() {
 
             // Sample the edge values to perform anti-aliasing
             for (int32_t s = 0; s < num_samples; ++s) {
-                float u = float(i + drand48()) / float(width);
-                float v = float(j + drand48()) / float(height);
+                float u = float(i + drand48()) * inv_width;
+                float v = float(j + drand48()) * inv_height;
 
                 Ray ray = camera.get_ray(u, v);
                 colour += Colour(ray, world, 0);
@@ -97,6 +101,7 @@ int main() {
 
             colour /= float(num_samples);
             colour = vec3(pow(colour.r(), inv_gamma), pow(colour.g(), inv_gamma), pow(colour.b(), inv_gamma));
+            // colour = vec3(sqrt(colour.r()), sqrt(colour.g()), sqrt(colour.b()));
 
             int32_t ir = int32_t(255.99 * colour.r());
             int32_t ig = int32_t(255.99 * colour.g());
